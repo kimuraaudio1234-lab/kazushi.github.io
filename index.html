@@ -9,15 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0a1628;
-    --deep: #06101f;
-    --ocean: #0d3a5c;
-    --teal: #0e7c7b;
-    --gold: #c9a84c;
-    --gold-light: #e8c96a;
-    --silver: #a8b8c8;
-    --white: #f2f4f6;
-    --text: #c8d8e8;
+    --navy: #004d6e;
+    --deep: #e8f7ff;
+    --ocean: #0ea5c8;
+    --teal: #00b4a0;
+    --gold: #f97316;
+    --gold-light: #fb923c;
+    --silver: #4a7c8e;
+    --white: #1a3a4a;
+    --text: #2d5a6e;
+    --bg-main: #f0faff;
+    --bg-section: #e0f4fb;
+    --bg-card: rgba(255,255,255,0.8);
+    --border: rgba(14,165,200,0.2);
+    --accent: #0ea5c8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,15 +30,15 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--deep);
+    background: var(--bg-main);
     color: var(--white);
     font-family: 'Noto Sans JP', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
   }
 
-  /* ===== WATER ANIMATION ===== */
-  .water-bg {
+  /* ===== SWIMMING FISH ANIMATION ===== */
+  .fish-swim-layer {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -41,31 +46,45 @@
     pointer-events: none;
     overflow: hidden;
   }
-  .water-bg::before {
-    content: '';
+  .swim-fish {
     position: absolute;
-    width: 200%; height: 200%;
-    top: -50%; left: -50%;
-    background: radial-gradient(ellipse at 20% 60%, rgba(13,58,92,0.6) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(14,124,123,0.3) 0%, transparent 40%),
-                radial-gradient(ellipse at 50% 80%, rgba(10,22,40,0.8) 0%, transparent 60%);
-    animation: waterShift 15s ease-in-out infinite alternate;
+    font-size: 1.6rem;
+    opacity: 0.18;
+    animation: swimAcross linear infinite;
+    user-select: none;
   }
-  @keyframes waterShift {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(3%, 2%) rotate(1deg); }
-  }
+  .swim-fish.right { animation-name: swimAcrossRight; }
 
-  /* ===== WAVE LINES ===== */
-  .wave-lines {
-    position: fixed;
-    bottom: 0; left: 0;
-    width: 100%; height: 300px;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.15;
+  @keyframes swimAcross {
+    0%   { transform: translateX(110vw) scaleX(-1); }
+    100% { transform: translateX(-20vw)  scaleX(-1); }
   }
-  .wave-lines svg { width: 100%; height: 100%; }
+  @keyframes swimAcrossRight {
+    0%   { transform: translateX(-20vw) scaleX(1); }
+    100% { transform: translateX(110vw) scaleX(1); }
+  }
+  .swim-fish:nth-child(1)  { top:  8%; font-size:2.2rem; opacity:0.13; animation-duration:28s; animation-delay:0s; }
+  .swim-fish:nth-child(2)  { top: 22%; font-size:1.4rem; opacity:0.15; animation-duration:22s; animation-delay:-8s; }
+  .swim-fish:nth-child(3)  { top: 38%; font-size:2.8rem; opacity:0.10; animation-duration:35s; animation-delay:-3s; }
+  .swim-fish:nth-child(4)  { top: 55%; font-size:1.2rem; opacity:0.18; animation-duration:20s; animation-delay:-14s; }
+  .swim-fish:nth-child(5)  { top: 70%; font-size:1.8rem; opacity:0.12; animation-duration:30s; animation-delay:-6s; }
+  .swim-fish:nth-child(6)  { top: 85%; font-size:1.0rem; opacity:0.16; animation-duration:18s; animation-delay:-18s; }
+  .swim-fish:nth-child(7)  { top: 14%; font-size:1.6rem; opacity:0.14; animation-duration:26s; animation-delay:-11s; }
+  .swim-fish:nth-child(8)  { top: 47%; font-size:2.0rem; opacity:0.11; animation-duration:32s; animation-delay:-22s; }
+  .swim-fish:nth-child(9)  { top: 63%; font-size:1.3rem; opacity:0.17; animation-duration:24s; animation-delay:-5s; }
+  .swim-fish:nth-child(10) { top: 92%; font-size:2.4rem; opacity:0.09; animation-duration:38s; animation-delay:-16s; }
+  /* 泡アニメ */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(14,165,200,0.12);
+    animation: bubbleRise linear infinite;
+    pointer-events: none;
+  }
+  @keyframes bubbleRise {
+    0%   { transform: translateY(0) scale(1); opacity: 0.2; }
+    100% { transform: translateY(-100vh) scale(1.4); opacity: 0; }
+  }
 
   /* ===== NAV ===== */
   nav {
@@ -76,14 +95,16 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 48px;
-    background: linear-gradient(to bottom, rgba(6,16,31,0.95), transparent);
-    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(14,165,200,0.15);
+    box-shadow: 0 2px 20px rgba(14,165,200,0.08);
   }
   .nav-logo {
     font-family: 'Shippori Mincho B1', serif;
     font-size: 1.4rem;
     font-weight: 800;
-    color: var(--gold);
+    color: var(--ocean);
     letter-spacing: 0.15em;
     text-decoration: none;
   }
@@ -106,9 +127,9 @@
     font-size: 0.8rem;
     letter-spacing: 0.15em;
     transition: color 0.3s;
-    font-weight: 400;
+    font-weight: 500;
   }
-  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover { color: var(--ocean); }
 
   /* Hamburger */
   .hamburger {
@@ -121,7 +142,7 @@
   .hamburger span {
     display: block;
     width: 26px; height: 2px;
-    background: var(--gold);
+    background: var(--ocean);
     transition: all 0.3s;
   }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -133,13 +154,13 @@
     position: fixed;
     top: 0; right: 0;
     width: 280px; height: 100vh;
-    background: rgba(6,16,31,0.98);
+    background: rgba(255,255,255,0.98);
     backdrop-filter: blur(12px);
     z-index: 150;
     flex-direction: column;
     justify-content: center;
     padding: 60px 40px;
-    border-left: 1px solid rgba(201,168,76,0.2);
+    border-left: 1px solid rgba(14,165,200,0.2);
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
   }
@@ -150,11 +171,11 @@
     font-family: 'Shippori Mincho B1', serif;
     font-size: 1.2rem;
     padding: 16px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(14,165,200,0.12);
     letter-spacing: 0.1em;
     transition: color 0.3s, padding-left 0.3s;
   }
-  .mobile-menu a:hover { color: var(--gold); padding-left: 8px; }
+  .mobile-menu a:hover { color: var(--ocean); padding-left: 8px; }
 
   /* ===== HERO ===== */
   .hero {
@@ -188,10 +209,11 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 0.85rem;
     letter-spacing: 0.5em;
-    color: var(--gold);
+    color: #fff;
     margin-bottom: 24px;
     opacity: 0;
     animation: fadeUp 0.8s 0.2s ease forwards;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   }
   .hero-title {
     font-family: 'Shippori Mincho B1', serif;
@@ -202,13 +224,15 @@
     margin-bottom: 12px;
     opacity: 0;
     animation: fadeUp 0.8s 0.4s ease forwards;
+    color: #fff;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
   }
-  .hero-title .gold { color: var(--gold); }
+  .hero-title .gold { color: #ffe066; }
   .hero-sub {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(1.2rem, 3vw, 2.5rem);
     letter-spacing: 0.3em;
-    color: var(--teal);
+    color: #7ef9f0;
     margin-bottom: 32px;
     opacity: 0;
     animation: fadeUp 0.8s 0.5s ease forwards;
@@ -216,11 +240,12 @@
   .hero-desc {
     font-size: 0.95rem;
     line-height: 2;
-    color: var(--silver);
+    color: rgba(255,255,255,0.9);
     max-width: 560px;
     margin-bottom: 48px;
     opacity: 0;
     animation: fadeUp 0.8s 0.6s ease forwards;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
   }
   .hero-cta {
     display: flex;
@@ -231,7 +256,7 @@
   }
   .btn-primary {
     background: var(--gold);
-    color: var(--deep);
+    color: #fff;
     padding: 16px 40px;
     font-weight: 700;
     font-size: 0.9rem;
@@ -242,19 +267,22 @@
     display: inline-block;
     transition: background 0.3s, transform 0.2s;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    box-shadow: 0 4px 16px rgba(249,115,22,0.35);
   }
   .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
   .btn-outline {
-    border: 1px solid rgba(201,168,76,0.5);
-    color: var(--gold);
+    border: 2px solid var(--ocean);
+    color: var(--ocean);
     padding: 16px 40px;
     font-size: 0.9rem;
     letter-spacing: 0.15em;
     text-decoration: none;
     display: inline-block;
-    transition: border-color 0.3s, background 0.3s;
+    transition: border-color 0.3s, background 0.3s, color 0.3s;
+    font-weight: 600;
+    background: rgba(255,255,255,0.7);
   }
-  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .btn-outline:hover { border-color: var(--ocean); background: var(--ocean); color: #fff; }
 
   /* Floating fish icon */
   .fish-deco {
@@ -322,21 +350,23 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    background: linear-gradient(to right, transparent, rgba(14,165,200,0.4), transparent);
   }
-  .section-divider .icon { color: var(--gold); font-size: 1.2rem; }
+  .section-divider .icon { color: var(--ocean); font-size: 1.2rem; }
 
   /* ===== SECTION BASE ===== */
   section {
     position: relative;
     z-index: 1;
     padding: 100px 8vw;
+    background: var(--bg-main);
   }
+  section:nth-child(even) { background: var(--bg-section); }
   .section-label {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.5em;
-    color: var(--teal);
+    color: var(--ocean);
     margin-bottom: 16px;
   }
   .section-title {
@@ -345,6 +375,7 @@
     font-weight: 800;
     line-height: 1.3;
     margin-bottom: 16px;
+    color: var(--navy);
   }
   .title-accent {
     display: inline-block;
@@ -388,8 +419,6 @@
     letter-spacing: 0.1em;
     margin-top: 4px;
   }
-
-  /* Photo collage */
   .photo-collage {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -421,10 +450,102 @@
 
   /* ===== FEATURES ===== */
   .features-bg {
-    background: linear-gradient(135deg, rgba(13,58,92,0.3) 0%, transparent 60%);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+    background: linear-gradient(135deg, rgba(14,165,200,0.08) 0%, rgba(0,180,160,0.06) 100%) !important;
+    border-top: 1px solid rgba(14,165,200,0.15);
+    border-bottom: 1px solid rgba(14,165,200,0.15);
   }
+  .feature-card {
+    background: rgba(255,255,255,0.85);
+    padding: 48px 36px;
+    border: 1px solid rgba(14,165,200,0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s, box-shadow 0.3s;
+    box-shadow: 0 2px 12px rgba(14,165,200,0.06);
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--ocean);
+    transition: width 0.4s;
+  }
+  .feature-card:hover { background: rgba(255,255,255,1); box-shadow: 0 8px 32px rgba(14,165,200,0.15); }
+  .feature-card:hover::before { width: 100%; }
+  .feature-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--navy);
+  }
+  .feature-desc {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--silver);
+  }
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+  }
+  .info-table tr {
+    border-bottom: 1px solid rgba(14,165,200,0.12);
+  }
+  .info-table td {
+    padding: 20px 0;
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+  .info-table td:first-child {
+    color: var(--ocean);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    width: 120px;
+    font-size: 0.8rem;
+  }
+  .info-table td:last-child {
+    color: var(--silver);
+    line-height: 1.8;
+  }
+  .contact-card {
+    background: linear-gradient(135deg, rgba(14,165,200,0.08), rgba(0,180,160,0.06));
+    border: 1px solid rgba(14,165,200,0.25);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow: 0 4px 24px rgba(14,165,200,0.08);
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--ocean), var(--teal));
+  }
+  .contact-card h3 {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 32px;
+    color: var(--navy);
+  }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .contact-icon {
+    color: var(--ocean);
+    font-size: 1.1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .contact-info { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
+  .contact-info strong { color: var(--navy); font-size: 1.1rem; display: block; margin-bottom: 2px; }
   .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -467,7 +588,59 @@
     color: var(--silver);
   }
 
-  /* ===== GALLERY ===== */
+
+  /* ===== CHOKA PHOTO WALL ===== */
+  .choka-photo-wall {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 220px 180px;
+    gap: 8px;
+  }
+  .choka-wall-item {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    background: rgba(14,165,200,0.1);
+  }
+  .choka-wall-item.tall { grid-row: span 2; }
+  .choka-wall-item.wide { grid-column: span 2; }
+  .choka-wall-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease, filter 0.45s ease;
+    filter: brightness(0.82) saturate(1.1);
+  }
+  .choka-wall-item:hover img {
+    transform: scale(1.07);
+    filter: brightness(0.95) saturate(1.3);
+  }
+  .choka-wall-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,60,100,0.75), transparent);
+    padding: 28px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .choka-wall-item:hover .choka-wall-label { opacity: 1; }
+  .choka-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.8);
+  }
+  .choka-fish {
+    font-size: 0.78rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* ===== GALLERY (旧スタイル・削除済みのため空定義) ===== */
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -565,7 +738,7 @@
   .blog-cta {
     margin-top: 36px;
     padding-top: 28px;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(14,165,200,0.15);
   }
   .blog-cta p {
     font-size: 0.8rem;
@@ -577,20 +750,19 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, rgba(14,124,123,0.3), rgba(13,58,92,0.4));
-    border: 1px solid rgba(14,124,123,0.4);
-    color: var(--white);
+    background: linear-gradient(135deg, var(--ocean), var(--teal));
+    color: #fff;
     padding: 14px 24px;
     text-decoration: none;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     transition: all 0.3s;
-    font-weight: 500;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(14,165,200,0.25);
   }
   .blog-link:hover {
-    background: linear-gradient(135deg, rgba(14,124,123,0.5), rgba(13,58,92,0.6));
-    border-color: var(--teal);
     transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(14,165,200,0.4);
   }
   .blog-arrow { transition: transform 0.3s; }
   .blog-link:hover .blog-arrow { transform: translateX(4px); }
@@ -636,58 +808,361 @@
   footer {
     position: relative;
     z-index: 1;
-    border-top: 1px solid rgba(201,168,76,0.15);
+    background: linear-gradient(135deg, #0ea5c8, #00b4a0);
+    border-top: none;
     padding: 60px 8vw 40px;
-  }
-  .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 48px;
-    flex-wrap: wrap;
-    gap: 40px;
+    color: #fff;
   }
   .footer-logo {
     font-family: 'Shippori Mincho B1', serif;
     font-size: 1.8rem;
     font-weight: 800;
-    color: var(--gold);
+    color: #fff;
     letter-spacing: 0.1em;
   }
   .footer-logo span {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 0.75rem;
-    color: var(--silver);
+    color: rgba(255,255,255,0.7);
     letter-spacing: 0.4em;
     display: block;
   }
-  .footer-links {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
   .footer-links a {
-    color: var(--silver);
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     transition: color 0.3s;
   }
-  .footer-links a:hover { color: var(--gold); }
+  .footer-links a:hover { color: #fff; }
   .footer-bottom {
     text-align: center;
     font-size: 0.75rem;
-    color: rgba(168,184,200,0.4);
+    color: rgba(255,255,255,0.5);
     letter-spacing: 0.1em;
   }
 
-  /* ===== RESPONSIVE ===== */
-  /* ===== INSTAGRAM SECTION ===== */
-  .instagram-section {
-    background: linear-gradient(135deg, rgba(6,16,31,0.9) 0%, rgba(13,28,50,0.95) 100%);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+  /* ===== HERO SLIDER ===== */
+  .hero-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
   }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(6,16,31,0.85) 0%, rgba(6,16,31,0.5) 60%, rgba(6,16,31,0.2) 100%);
+  }
+  .hero { position: relative; z-index: 1; }
+
+  .price-section {
+    background: var(--bg-section) !important;
+  }
+  .price-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(14,165,200,0.18);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 12px rgba(14,165,200,0.06);
+  }
+  .price-card:hover { background: #fff; box-shadow: 0 8px 28px rgba(14,165,200,0.14); }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(to right, var(--ocean), var(--teal));
+  }
+  .price-card-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 16px;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(14,165,200,0.1);
+    gap: 12px;
+  }
+  .price-item:last-child { border-bottom: none; }
+  .price-item-name { font-size: 0.85rem; color: var(--silver); flex: 1; }
+  .price-item-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--ocean);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .price-item-val span { font-size: 0.75rem; font-family: 'Noto Sans JP', sans-serif; color: var(--silver); }
+  .price-note {
+    font-size: 0.78rem;
+    color: rgba(74,124,142,0.7);
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+  .price-calendar {
+    margin-top: 40px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(14,165,200,0.18);
+    padding: 28px 32px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(14,165,200,0.06);
+  }
+  .price-calendar h4 {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .season-item {
+    padding: 10px 6px;
+    border: 1px solid rgba(14,165,200,0.12);
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.5;
+    background: rgba(255,255,255,0.6);
+  }
+  .season-item.peak { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.06); }
+  .season-item .month { color: var(--ocean); font-weight: 700; display: block; }
+  .season-item .fish { color: var(--silver); font-size: 0.7rem; }
+  .blog-section { background: var(--bg-main) !important; }
+  .blog-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(14,165,200,0.12);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 12px rgba(14,165,200,0.06);
+  }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(14,165,200,0.15); }
+  .blog-card-date { color: var(--ocean); }
+  .blog-card-title { color: var(--navy); }
+  .blog-card-desc { color: var(--silver); }
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .price-card {
+    background: rgba(13,58,92,0.25);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .price-card:hover { background: rgba(13,58,92,0.4); }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .price-card-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    gap: 12px;
+  }
+  .price-item:last-child { border-bottom: none; }
+  .price-item-name { font-size: 0.85rem; color: var(--silver); flex: 1; }
+  .price-item-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .price-item-val span { font-size: 0.75rem; font-family: 'Noto Sans JP', sans-serif; color: var(--silver); }
+  .price-note {
+    font-size: 0.78rem;
+    color: rgba(168,184,200,0.6);
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+  .price-calendar {
+    margin-top: 40px;
+    background: rgba(13,58,92,0.2);
+    border: 1px solid rgba(201,168,76,0.1);
+    padding: 28px 32px;
+    text-align: center;
+  }
+  .price-calendar h4 {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .season-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .season-item {
+    padding: 10px 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .season-item.peak { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
+  .season-item .month { color: var(--gold); font-weight: 700; display: block; }
+  .season-item .fish { color: var(--silver); font-size: 0.7rem; }
+
+  /* ===== BLOG SECTION ===== */
+  .blog-section {
+    background: linear-gradient(135deg, rgba(6,16,31,0.95) 0%, rgba(10,28,50,0.9) 100%);
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 48px;
+  }
+  .blog-card {
+    background: rgba(13,40,70,0.35);
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s, border-color 0.3s;
+    position: relative;
+  }
+  .blog-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.3); }
+  .blog-card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.8) saturate(1.1);
+    transition: filter 0.4s, transform 0.4s;
+  }
+  .blog-card:hover .blog-card-img { filter: brightness(0.95) saturate(1.3); transform: scale(1.04); }
+  .blog-card-img-wrap { overflow: hidden; }
+  .blog-card-body { padding: 16px 20px; }
+  .blog-card-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .blog-card-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .blog-card-desc {
+    font-size: 0.78rem;
+    color: var(--silver);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ===== ACCESS STEPS ===== */
+  .access-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 40px 0;
+  }
+  .access-step {
+    position: relative;
+    overflow: hidden;
+    background: var(--ocean);
+  }
+  .access-step img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.75);
+    transition: filter 0.3s;
+  }
+  .access-step:hover img { filter: brightness(0.9); }
+  .access-step-num {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--gold);
+    color: var(--deep);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    padding: 2px 8px;
+    letter-spacing: 0.1em;
+  }
+  .access-step-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(6,16,31,0.9), transparent);
+    padding: 24px 8px 8px;
+    font-size: 0.7rem;
+    color: var(--silver);
+    line-height: 1.4;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  .instagram-section {
+    background: linear-gradient(135deg, rgba(131,58,180,0.06) 0%, rgba(253,29,29,0.04) 50%, rgba(252,176,69,0.06) 100%) !important;
+    border-top: 1px solid rgba(200,120,180,0.15);
+    border-bottom: 1px solid rgba(200,120,180,0.15);
+  }
+  .ig-follow-banner {
+    background: linear-gradient(135deg, rgba(131,58,180,0.08) 0%, rgba(253,29,29,0.06) 50%, rgba(252,176,69,0.08) 100%);
+    border: 1px solid rgba(200,120,180,0.2);
+  }
+  .ig-banner-text h3 { color: var(--navy); }
+  .ig-banner-text p { color: var(--silver); }
+  .ig-grid-label { color: rgba(150,80,140,0.7); }
+  .ig-shuffle-btn {
+    border-color: rgba(150,80,140,0.3);
+    color: rgba(150,80,140,0.9);
+  }
+  .ig-shuffle-btn:hover { background: rgba(131,58,180,0.08); color: var(--navy); }
+  .access-section { text-align: center; background: var(--bg-section) !important; }
+  .access-note { color: var(--silver); }
+  .access-step { background: rgba(14,165,200,0.1); }
+  .access-step-num { background: var(--ocean); color: #fff; }
 
   /* Instagram Follow Banner */
   .ig-follow-banner {
@@ -908,25 +1383,25 @@
     to { transform: rotate(360deg); }
   }
 
-  /* ===== MAP (proper embed) ===== */
   .map-embed-wrap {
     position: relative;
     max-width: 860px;
     margin: 0 auto;
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(14,165,200,0.25);
     overflow: hidden;
+    box-shadow: 0 4px 24px rgba(14,165,200,0.1);
   }
   .map-embed-wrap iframe {
     width: 100%;
     height: 420px;
     border: 0;
     display: block;
-    filter: invert(0.88) hue-rotate(180deg) saturate(0.7) brightness(0.85);
+    filter: none;
   }
   .map-overlay-info {
-    background: rgba(6,16,31,0.92);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(8px);
-    border-top: 1px solid rgba(201,168,76,0.15);
+    border-top: 1px solid rgba(14,165,200,0.15);
     padding: 24px 32px;
     display: flex;
     justify-content: space-between;
@@ -940,7 +1415,7 @@
     line-height: 1.7;
   }
   .map-detail strong {
-    color: var(--white);
+    color: var(--navy);
     display: block;
     font-family: 'Shippori Mincho B1', serif;
     font-size: 1rem;
@@ -950,6 +1425,23 @@
   @media (max-width: 680px) {
     .ig-photo-grid { grid-template-columns: repeat(2, 1fr); }
     .ig-follow-banner { padding: 28px 24px; }
+  }
+
+  @media (max-width: 680px) {
+    .price-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .access-steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .season-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 680px) {
+    .choka-photo-wall {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto;
+    }
+    .choka-wall-item.tall, .choka-wall-item.wide { grid-row: span 1; grid-column: span 1; }
+    .choka-wall-item { height: 140px; }
+    .choka-wall-label { opacity: 1; }
   }
 
   @media (max-width: 900px) {
@@ -990,13 +1482,18 @@
 </head>
 <body>
 
-<!-- Water background -->
-<div class="water-bg"></div>
-<div class="wave-lines">
-  <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
-    <path d="M0,150 C360,50 720,250 1080,150 C1260,100 1380,170 1440,150 L1440,300 L0,300 Z" fill="rgba(13,58,92,0.3)" />
-    <path d="M0,200 C240,120 480,260 720,200 C960,140 1200,220 1440,190 L1440,300 L0,300 Z" fill="rgba(14,124,123,0.15)" />
-  </svg>
+<!-- 泳ぐ魚レイヤー -->
+<div class="fish-swim-layer" id="fishLayer">
+  <div class="swim-fish">🐟</div>
+  <div class="swim-fish right">🐠</div>
+  <div class="swim-fish">🐡</div>
+  <div class="swim-fish right">🐟</div>
+  <div class="swim-fish">🦐</div>
+  <div class="swim-fish right">🐠</div>
+  <div class="swim-fish">🐟</div>
+  <div class="swim-fish right">🦑</div>
+  <div class="swim-fish">🐡</div>
+  <div class="swim-fish right">🐟</div>
 </div>
 
 <!-- NAV -->
@@ -1011,7 +1508,9 @@
     <li><a href="#gallery">釣果ギャラリー</a></li>
     <li><a href="#info">ご案内</a></li>
     <li><a href="#access">アクセス</a></li>
-    <li><a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" style="color:var(--gold);">ブログ</a></li>
+    <li><a href="#price">料金</a></li>
+    <li><a href="#blog">ブログ</a></li>
+    <li><a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" style="color:var(--gold);">アメブロ</a></li>
     <li><a href="#instagram" style="color:rgba(220,140,200,0.9);">Instagram</a></li>
   </ul>
   <div class="hamburger" id="hamburger">
@@ -1021,18 +1520,24 @@
 
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMobileMenu()">釣り場について</a>
-  <a href="#features" onclick="closeMobileMenu()">特徴</a>
-  <a href="#gallery" onclick="closeMobileMenu()">釣果ギャラリー</a>
-  <a href="#info" onclick="closeMobileMenu()">ご案内</a>
-  <a href="#access" onclick="closeMobileMenu()">アクセス</a>
-  <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank">ブログ →</a>
-  <a href="https://www.instagram.com/ikada.maruki/" target="_blank" style="color:rgba(220,140,200,0.9);">Instagram →</a>
+  <a href="#about" onclick="closeMobileMenu()">🐟 釣り場について</a>
+  <a href="#features" onclick="closeMobileMenu()">⭐ 特徴</a>
+  <a href="#gallery" onclick="closeMobileMenu()">📸 最新釣果</a>
+  <a href="#price" onclick="closeMobileMenu()">💰 料金案内</a>
+  <a href="#instagram" onclick="closeMobileMenu()">📷 Instagram</a>
+  <a href="#info" onclick="closeMobileMenu()">📞 ご予約・お問い合わせ</a>
+  <a href="#access" onclick="closeMobileMenu()">🗺 アクセス</a>
+  <a href="https://ameblo.jp/ikadamaruki/" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu()">📝 アメブロ →</a>
 </div>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="fish-deco">🐟</div>
+  <!-- スライドショー背景 -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active" style="background-image:url('https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/kv01.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/kv02.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/kv03.jpg')"></div>
+  </div>
   <p class="hero-eyebrow">MIEprefecture · SHIMAKATSURA</p>
   <h1 class="hero-title">
     三重の海で、<br><span class="gold">大物と</span>対峙する。
@@ -1044,7 +1549,7 @@
     早朝から夕まずめまで、本物の海釣りを体験してください。
   </p>
   <div class="hero-cta">
-    <a href="tel:0596-561028" class="btn-primary">📞 今すぐ予約</a>
+    <a href="#info" class="btn-primary">📞 今すぐ予約</a>
     <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">釣果ブログを見る →</a>
   </div>
   <div class="scroll-hint">
@@ -1062,7 +1567,7 @@
       <p class="section-label">ABOUT MARUKI</p>
       <h2 class="section-title">島勝浦の豊かな海が<br>育む、一級の釣り場。</h2>
       <div class="title-accent"></div>
-      <p>三重県北牟婁郡紀北町・島勝浦に位置する「筏マルキ」は、チヌ（クロダイ）・アイゴ釣りを専門とした筏釣り施設です。昔から漁業が盛んで魚影が濃く、各地方から釣り人が訪れる島勝浦で本物の釣りを体験できます。</p>
+      <p>三重県北牟婁郡紀北町・島勝浦に位置する「筏マルキ」は、筏・仕立船・レンタルボートの釣り施設です。昔から漁業が盛んで魚影が濃く、各地方から釣り人が訪れる島勝浦で本物の釣りを体験できます。</p>
       <p>定置網には60cmはもとより70cmを超えるチヌも漁獲されるほどの実績。チヌかかり釣り筏が少なかったこの地で、日本記録を狙える夢の釣り場です。</p>
       <div class="stat-row">
         <div class="stat">
@@ -1081,13 +1586,13 @@
     </div>
     <div class="photo-collage">
       <div class="photo-a">
-        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/atareba.gif" alt="筏の様子" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🎣</div>'">
+        <img class="collage-img" src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/about06.jpg" alt="島勝の海の筏" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🎣</div>'">
       </div>
       <div class="photo-b">
-        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🐟</div>'">
+        <img class="collage-img" src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/about01.jpg" alt="山本和代表" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🐟</div>'">
       </div>
       <div class="photo-c">
-        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA5NC5CA1.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🌊</div>'">
+        <img class="collage-img" src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/about07.jpg" alt="筏４基" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🌊</div>'">
       </div>
     </div>
   </div>
@@ -1119,27 +1624,201 @@
   </div>
 </section>
 
-<!-- GALLERY -->
-<section id="gallery">
-  <p class="section-label">FISHING GALLERY</p>
-  <h2 class="section-title">釣果ギャラリー</h2>
+<div class="section-divider"><span class="icon">💰</span></div>
+
+<!-- PRICE -->
+<section id="price" class="price-section">
+  <p class="section-label">PRICE</p>
+  <h2 class="section-title">料金案内</h2>
   <div class="title-accent"></div>
-  <div class="gallery-grid">
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_02731.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_028821.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001701.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001721.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110726_181725.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110727_184646.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/20130911_191916.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/150327asanoa.jpg" alt="朝の筏" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>⚓</div>'"></div>
+
+  <div class="price-grid">
+    <!-- 筏釣り -->
+    <div class="price-card">
+      <div class="price-card-title">🛶 筏釣り</div>
+      <div class="price-item">
+        <span class="price-item-name">男性（1名）</span>
+        <span class="price-item-val">4,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">女性（1名）</span>
+        <span class="price-item-val">3,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">保険料（全員）</span>
+        <span class="price-item-val">+1,000<span> 円</span></span>
+      </div>
+      <p class="price-note">※保険料は全利用者に一律1,000円かかります</p>
+    </div>
+
+    <!-- 仕立船 -->
+    <div class="price-card">
+      <div class="price-card-title">⛵ 仕立船</div>
+      <div class="price-item">
+        <span class="price-item-name">4名まで</span>
+        <span class="price-item-val">25,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">5名</span>
+        <span class="price-item-val">30,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">6名</span>
+        <span class="price-item-val">35,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">保険料（全員）</span>
+        <span class="price-item-val">+1,000<span> 円/人</span></span>
+      </div>
+      <p class="price-note">※4名まで25,000円、1名増えるごとに+5,000円<br>※保険料は全利用者に一律1,000円かかります</p>
+    </div>
+
+    <!-- レンタルボート（免許あり） -->
+    <div class="price-card">
+      <div class="price-card-title">🚤 レンタルボート（免許必要）</div>
+      <div class="price-item">
+        <span class="price-item-name">5人乗り</span>
+        <span class="price-item-val">13,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">6人乗り</span>
+        <span class="price-item-val">13,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">7人乗り</span>
+        <span class="price-item-val">13,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">保険料（全員）</span>
+        <span class="price-item-val">+1,000<span> 円/人</span></span>
+      </div>
+      <p class="price-note">※5・6・7人乗り、すべて一律13,000円<br>※船舶免許（2級以上）が必要です<br>※保険料は全利用者に一律1,000円かかります</p>
+    </div>
+
+    <!-- 2馬力ボート -->
+    <div class="price-card">
+      <div class="price-card-title">🛥 2馬力艇（免許不要）</div>
+      <div class="price-item">
+        <span class="price-item-name">料金</span>
+        <span class="price-item-val">8,000<span> 円</span></span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">免許</span>
+        <span class="price-item-val" style="font-size:0.95rem;font-family:'Noto Sans JP',sans-serif;color:var(--teal);">不要</span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-name">保険料（全員）</span>
+        <span class="price-item-val">+1,000<span> 円/人</span></span>
+      </div>
+      <p class="price-note">※免許不要で気軽にご利用いただけます<br>※ライフジャケット着用必須<br>※保険料は全利用者に一律1,000円かかります</p>
+    </div>
   </div>
-  <div style="text-align:center;margin-top:40px;">
-    <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">最新の釣果をブログで見る →</a>
+
+  <!-- 保険料バナー -->
+  <div style="background:linear-gradient(135deg,rgba(249,115,22,0.12),rgba(14,165,200,0.1));border:1px solid rgba(249,115,22,0.3);padding:20px 28px;margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <span style="font-size:1.6rem;">🛡</span>
+    <div>
+      <div style="font-family:'Shippori Mincho B1',serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;">保険料について</div>
+      <div style="font-size:0.85rem;color:var(--silver);line-height:1.7;">ご利用の種別にかかわらず、<strong style="color:var(--gold)">全利用者様に一律1,000円の保険料</strong>がかかります。安全にお楽しみいただくための補償です。</div>
+    </div>
+  </div>
+
+  <!-- 季節カレンダー -->
+  <div class="price-calendar">
+    <h4>🗓 旬の魚種カレンダー</h4>
+    <div class="season-grid">
+      <div class="season-item peak"><span class="month">1〜3月</span><span class="fish">メバル・カサゴ</span></div>
+      <div class="season-item peak"><span class="month">4〜6月</span><span class="fish">チヌ・マダイ・アオリイカ</span></div>
+      <div class="season-item"><span class="month">7〜9月</span><span class="fish">アイゴ・オオモンハタ</span></div>
+      <div class="season-item peak"><span class="month">10〜12月</span><span class="fish">アオリイカ・チヌ・根魚</span></div>
+    </div>
+    <p style="font-size:0.75rem;color:rgba(100,140,160,0.7);margin-top:12px;">※天候・海況により釣果は変動します。最新情報はブログ・お電話でご確認ください。</p>
   </div>
 </section>
 
-<div class="section-divider"><span class="icon">🐟</span></div>
+<div class="section-divider"><span class="icon">📝</span></div>
+
+<!-- CHOKA -->
+<section id="gallery" class="blog-section">
+  <p class="section-label">LATEST FISHING REPORT</p>
+  <h2 class="section-title">最新釣果情報</h2>
+  <div class="title-accent"></div>
+  <p style="font-size:0.9rem;color:var(--silver);margin-bottom:48px;line-height:1.9;">アメブロで毎日更新中！クリックして詳細記事をチェックしてください。</p>
+
+  <!-- フォトウォール（最新画像グリッド） -->
+  <div class="choka-photo-wall">
+    <a class="choka-wall-item tall" href="https://ameblo.jp/ikadamaruki/entry-12963360861.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/d1/b0/j/o0813108015772563830.jpg?caw=800" alt="４月17日釣果">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">アオリイカ大型×５杯</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360861.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/91/4a/j/o0813108015772563831.jpg?caw=800" alt="４月17日釣果 松田氏">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">良型マダイ・オオモンハタ</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360861.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/81/da/j/o0813108015772563832.jpg?caw=800" alt="４月17日釣果 ホウボウ">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">ホウボウ等</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360606.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/1d/39/j/o0813108015772563092.jpg?caw=800" alt="４月16日釣果 高木氏">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">アオリイカ大型×２杯</span></div>
+    </a>
+    <a class="choka-wall-item wide" href="https://ameblo.jp/ikadamaruki/entry-12963360606.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/46/40/j/o0813108015772563095.jpg?caw=800" alt="４月16日釣果 マダイ">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">良型マダイ・イトヨリ</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360357.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/30/81/j/o0813108015772562296.jpg?caw=800" alt="４月12日釣果">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">シロアマダイ・ホウボウ</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360357.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/e8/9a/j/o0813108015772562305.jpg?caw=800" alt="４月12日釣果 吉森氏">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">マダイ・マアジ</span></div>
+    </a>
+    <a class="choka-wall-item" href="https://ameblo.jp/ikadamaruki/entry-12963360606.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/80/9b/j/o0813108015772563096.jpg?caw=800" alt="４月16日釣果">
+      <div class="choka-wall-label"><span class="choka-date">2026.04.18</span><span class="choka-fish">オオモンハタ・ホウボウ</span></div>
+    </a>
+  </div>
+
+  <!-- 記事カード -->
+  <div class="blog-grid" style="margin-top:48px;">
+    <a class="blog-card" href="https://ameblo.jp/ikadamaruki/entry-12963360861.html" target="_blank" rel="noopener noreferrer">
+      <div class="blog-card-img-wrap">
+        <img class="blog-card-img" src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/d1/b0/j/o0813108015772563830.jpg?caw=800" alt="４月17日釣果">
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-card-date">2026.04.18</div>
+        <div class="blog-card-title">４月１７日釣果</div>
+        <div class="blog-card-desc">伊藤氏 アオリイカ大型揃いで５杯。筏のヤエン釣りが絶好釣！松田氏とお友達 良型マダイ・大型オオモンハタ・ホウボウ等</div>
+      </div>
+    </a>
+    <a class="blog-card" href="https://ameblo.jp/ikadamaruki/entry-12963360606.html" target="_blank" rel="noopener noreferrer">
+      <div class="blog-card-img-wrap">
+        <img class="blog-card-img" src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/1d/39/j/o0813108015772563092.jpg?caw=800" alt="４月16日釣果">
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-card-date">2026.04.18</div>
+        <div class="blog-card-title">４月１６日釣果</div>
+        <div class="blog-card-desc">高木氏 アオリイカ大型混じりで２杯。安楽さんとお友達 良型マダイ・オオモンハタ・イトヨリ・ホウボウ等</div>
+      </div>
+    </a>
+    <a class="blog-card" href="https://ameblo.jp/ikadamaruki/entry-12963360357.html" target="_blank" rel="noopener noreferrer">
+      <div class="blog-card-img-wrap">
+        <img class="blog-card-img" src="https://stat.ameba.jp/user_images/20260418/08/ikadamaruki/30/81/j/o0813108015772562296.jpg?caw=800" alt="４月12日釣果">
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-card-date">2026.04.18</div>
+        <div class="blog-card-title">４月１２日釣果</div>
+        <div class="blog-card-desc">吉川氏とお友達 シロアマダイ・シロサバフグ・イトヨリ・ホウボウ等。吉森氏 マダイ・マアジ等</div>
+      </div>
+    </a>
+  </div>
+
+  <div style="text-align:center;margin-top:48px;">
+    <a href="https://ameblo.jp/ikadamaruki/" target="_blank" rel="noopener noreferrer" class="btn-primary">📝 アメブロで全記事を見る →</a>
+  </div>
+</section>
 
 <!-- INSTAGRAM -->
 <section id="instagram" class="instagram-section">
@@ -1234,24 +1913,24 @@
       <div class="contact-card">
         <h3>お問い合わせ・ご予約</h3>
         <div class="contact-item">
-          <span class="contact-icon">📞</span>
-          <div class="contact-info">
-            <strong>0596-56-1028</strong>
-            固定電話（D-net以外）
-          </div>
-        </div>
-        <div class="contact-item">
           <span class="contact-icon">📱</span>
           <div class="contact-info">
-            <strong>090-1980-0063</strong>
-            ソフトバンク（D-net以外）
+            <strong><a href="tel:090-1980-0063" style="color:inherit;text-decoration:none;">090-1980-0063</a></strong>
+            携帯（ソフトバンク）
           </div>
         </div>
         <div class="contact-item">
           <span class="contact-icon">📲</span>
           <div class="contact-info">
-            <strong>090-3303-0063</strong>
-            ドコモ（D-net以外）
+            <strong><a href="tel:090-3303-0063" style="color:inherit;text-decoration:none;">090-3303-0063</a></strong>
+            携帯（ドコモ）
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">👤</span>
+          <div class="contact-info">
+            <strong>山本 和 代表</strong>
+            楽しい釣りを案内します
           </div>
         </div>
         <div class="contact-item">
@@ -1263,7 +1942,7 @@
 
         <div class="blog-cta">
           <p>最新の釣果・お知らせはブログで</p>
-          <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="blog-link">
+          <a href="https://ameblo.jp/ikadamaruki/" target="_blank" class="blog-link">
             📝 筏マルキ ブログ <span class="blog-arrow">→</span>
           </a>
         </div>
@@ -1279,8 +1958,63 @@
   <div class="title-accent"></div>
   <p class="access-note">
     三重県北牟婁郡紀北町海山区島勝浦319<br>
-    紀勢自動車道・海山ICより約10分。お車でお越しの方は事前にお電話にてご確認ください。
+    紀勢自動車道・<strong style="color:var(--gold)">海山ICより約10分</strong>。荷物は船着き場で下ろし、車は駐車場へ。
   </p>
+
+  <!-- 写真付き道順 -->
+  <div class="access-steps-grid">
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access01.jpg" alt="①海山ICを降りる">
+      <div class="access-step-num">① 海山IC</div>
+      <div class="access-step-label">海山ICを降りる</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access02.jpg" alt="②右折して直進">
+      <div class="access-step-num">② 右折</div>
+      <div class="access-step-label">ここを右折して直進</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access03.jpg" alt="③相賀北を左折">
+      <div class="access-step-num">③ 相賀北</div>
+      <div class="access-step-label">相賀北を左折して道なりに</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access04.jpg" alt="④踏み切り">
+      <div class="access-step-num">④ 踏切</div>
+      <div class="access-step-label">踏み切りを渡る</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access05.jpg" alt="⑤交差点を左折">
+      <div class="access-step-num">⑤ 左折</div>
+      <div class="access-step-label">この交差点を左折</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access06.jpg" alt="⑥引本トンネル">
+      <div class="access-step-num">⑥ トンネル</div>
+      <div class="access-step-label">引本トンネルを抜ける</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access07.jpg" alt="⑦トンネル後左折">
+      <div class="access-step-num">⑦ 左折</div>
+      <div class="access-step-label">トンネル後すぐ左折</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access08.jpg" alt="⑧5分走る">
+      <div class="access-step-num">⑧ 直進</div>
+      <div class="access-step-label">5分ほど走る</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access09.jpg" alt="⑨下り道を左折">
+      <div class="access-step-num">⑨ 左折</div>
+      <div class="access-step-label">下り道の交差点を左折</div>
+    </div>
+    <div class="access-step">
+      <img src="https://mie.tsurisoku.com/ikadamaruki/wp-content/uploads/sites/23/2024/07/access10.jpg" alt="⑩交番の角を左折・到着">
+      <div class="access-step-num">⑩ 到着！</div>
+      <div class="access-step-label">交番の角を左折。駐車場へ</div>
+    </div>
+  </div>
+
   <div class="map-embed-wrap">
     <iframe
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.5!2d136.29337!3d34.11228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDA2JzQ0LjIiTiAxMzbCsDE3JzM2LjEiRQ!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
@@ -1327,18 +2061,86 @@
 </footer>
 
 <script>
+  // ===== HAMBURGER MENU (タッチ対応) =====
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-  });
+  function openMenu() {
+    hamburger.classList.add('open');
+    mobileMenu.classList.add('open');
+    mobileMenu.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
 
   function closeMobileMenu() {
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+    // アニメーション後にdisplayを元に戻す
+    setTimeout(() => { mobileMenu.style.display = ''; }, 400);
   }
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (mobileMenu.classList.contains('open')) {
+      closeMobileMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // メニュー外タップで閉じる
+  document.addEventListener('click', (e) => {
+    if (mobileMenu.classList.contains('open') &&
+        !mobileMenu.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+      closeMobileMenu();
+    }
+  });
+
+  // スムーススクロール（href="#xxx"リンク全般に適用）
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        closeMobileMenu();
+        setTimeout(() => {
+          const offset = 72; // ナビ高さ分
+          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }, 50);
+      }
+    });
+  });
+
+  // ===== BUBBLE ANIMATION =====
+  (function() {
+    const layer = document.getElementById('fishLayer');
+    for (let i = 0; i < 18; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 6 + Math.random() * 20;
+      b.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*20}%;
+        animation-duration:${8 + Math.random()*14}s;
+        animation-delay:${-Math.random()*12}s;
+      `;
+      layer.appendChild(b);
+    }
+  })();
+
+  // ===== HERO SLIDESHOW =====
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.hero-slide');
+  function nextSlide() {
+    slides[slideIndex].classList.remove('active');
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add('active');
+  }
+  setInterval(nextSlide, 4000);
 
   // ===== INSTAGRAM GRID SHUFFLE =====
   // 既存サイトの写真プール（本来はInstagram APIの画像URLに差し替え可）
