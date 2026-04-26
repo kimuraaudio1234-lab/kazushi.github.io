@@ -1032,7 +1032,9 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="fish-deco">🐟</div>
+  <div class="fish-deco">
+    <img src="http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg" alt="大物クロダイ" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';this.parentNode.innerHTML='🐟';">
+  </div>
   <p class="hero-eyebrow">MIEprefecture · SHIMAKATSURA</p>
   <h1 class="hero-title">
     三重の海で、<br><span class="gold">大物と</span>対峙する。
@@ -1084,10 +1086,10 @@
         <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/atareba.gif" alt="筏の様子" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🎣</div>'">
       </div>
       <div class="photo-b">
-        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🐟</div>'">
+        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/150308hibinosia1.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🐟</div>'">
       </div>
       <div class="photo-c">
-        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA5NC5CA1.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🌊</div>'">
+        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/DSCF0510.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🌊</div>'">
       </div>
     </div>
   </div>
@@ -1124,17 +1126,11 @@
   <p class="section-label">FISHING GALLERY</p>
   <h2 class="section-title">釣果ギャラリー</h2>
   <div class="title-accent"></div>
-  <div class="gallery-grid">
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_02731.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_028821.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001701.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001721.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110726_181725.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110727_184646.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/20130911_191916.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
-    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/150327asanoa.jpg" alt="朝の筏" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>⚓</div>'"></div>
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- JavaScriptでランダム表示 -->
   </div>
   <div style="text-align:center;margin-top:40px;">
+    <button class="btn-outline" onclick="shuffleGallery()" style="cursor:pointer;margin-right:16px;">🔄 別の写真を見る</button>
     <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">最新の釣果をブログで見る →</a>
   </div>
 </section>
@@ -1339,6 +1335,63 @@
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('open');
   }
+
+  // ===== GALLERY RANDOM DISPLAY =====
+  const galleryPhotoPool = [
+    'http://www.za.ztv.ne.jp/awbhszyp/DCP_02731.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/DCP_028821.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/DCP_0241s1.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/P10001701.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/P10001721.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/CA5NC5CA1.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/CATAT5VM1.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/CAKQLIIY1.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110726_181725.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110727_184646.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/120610_142230.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/120603_151641.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/120321_144213.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/120526_144701.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/111113_145432.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/150308hibinosia1.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110724_182425.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110802_181239.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110724_182121.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110410_150534.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/110409_181451.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/120616_150957.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20121111_181659.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20130104_211948.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20130105_154651.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20130412_184239.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20130505_195103.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/20130911_191916.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/150327asanoa.jpg',
+    'http://www.za.ztv.ne.jp/awbhszyp/DSCF0510.jpg'
+  ];
+
+  function shuffleGallery() {
+    const grid = document.getElementById('galleryGrid');
+    const shuffled = shuffleArray(galleryPhotoPool).slice(0, 8);
+    grid.innerHTML = '';
+    shuffled.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.style.cssText = 'opacity:0;transform:scale(0.9);transition:opacity 0.4s ease ' + (i * 0.05) + 's, transform 0.4s ease ' + (i * 0.05) + 's;';
+      item.innerHTML = `<img src="${src}" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\\'>🐟</div>'">`;
+      grid.appendChild(item);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'scale(1)';
+        });
+      });
+    });
+  }
+
+  // Initial gallery render
+  shuffleGallery();
 
   // ===== INSTAGRAM GRID SHUFFLE =====
   // 既存サイトの写真プール（本来はInstagram APIの画像URLに差し替え可）
