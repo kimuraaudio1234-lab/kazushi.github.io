@@ -1523,7 +1523,7 @@
   <a href="#features" onclick="closeMobileMenu()">⭐ 特徴</a>
   <a href="#gallery" onclick="closeMobileMenu()">📸 最新釣果</a>
   <a href="#price" onclick="closeMobileMenu()">💰 料金案内</a>
-  <a href="#info" onclick="closeMobileMenu()">📞 ご予約・お問い合わせ</a>
+  <a href="#contact" onclick="closeMobileMenu()">📞 ご予約・お問い合わせ</a>
   <a href="#access" onclick="closeMobileMenu()">🗺 アクセス</a>
   <a href="https://ameblo.jp/ikadamaruki/" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu()">📝 アメブロ →</a>
 </div>
@@ -1547,7 +1547,7 @@
     早朝から夕まずめまで、本物の海釣りを体験してください。
   </p>
   <div class="hero-cta">
-    <a href="#info" class="btn-primary">📞 今すぐ予約</a>
+    <a href="#contact" class="btn-primary">📞 今すぐ予約</a>
     <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">釣果ブログを見る →</a>
   </div>
   <div class="scroll-hint">
@@ -1727,7 +1727,7 @@
     <div class="season-grid">
       <div class="season-item peak"><span class="month">1〜3月</span><span class="fish">メバル・カサゴ</span></div>
       <div class="season-item peak"><span class="month">4〜6月</span><span class="fish">チヌ・マダイ・アオリイカ</span></div>
-      <div class="season-item"><span class="month">7〜9月</span><span class="fish">アイゴ・オオモンハタ</span></div>
+      <div class="season-item peak"><span class="month">7〜9月</span><span class="fish">アイゴ・オオモンハタ</span></div>
       <div class="season-item peak"><span class="month">10〜12月</span><span class="fish">アオリイカ・チヌ・根魚</span></div>
     </div>
     <p style="font-size:0.75rem;color:rgba(100,140,160,0.7);margin-top:12px;">※天候・海況により釣果は変動します。最新情報はブログ・お電話でご確認ください。</p>
@@ -1843,23 +1843,8 @@
   </div>
 
   <!-- Photo grid label -->
-  <div class="ig-grid-label">RECENT POSTS · ランダム表示</div>
+  <!-- ※釣果画像グリッド削除 -->
 
-  <!-- Photo Grid (uses existing site photos + placeholders, shuffled by JS) -->
-  <div class="ig-photo-grid" id="igGrid">
-    <!-- filled by JS -->
-  </div>
-
-  <div class="ig-shuffle-row">
-    <button class="ig-shuffle-btn" id="igShuffleBtn" onclick="shuffleIgGrid()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-      別の写真を見る
-    </button>
-    <a href="https://www.instagram.com/ikada.maruki?igsh=MXJsdzd2OXNzamsyNQ==" target="_blank" rel="noopener noreferrer" class="ig-follow-btn" style="font-size:0.82rem;padding:12px 24px;">
-      <svg viewBox="0 0 448 512" aria-hidden="true" style="width:16px;height:16px;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
-      もっと見る → Instagram
-    </a>
-  </div>
 </section>
 
 <div class="section-divider"><span class="icon">🐟</span></div>
@@ -1908,7 +1893,7 @@
 
     <!-- Contact card -->
     <div>
-      <div class="contact-card">
+      <div class="contact-card" id="contact">
         <h3>お問い合わせ・ご予約</h3>
         <div class="contact-item">
           <span class="contact-icon">📱</span>
