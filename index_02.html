@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>筏マルキ｜三重・島勝浦の筏釣り</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #06101f;
+    --ocean: #0d3a5c;
+    --teal: #0e7c7b;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --silver: #a8b8c8;
+    --white: #f2f4f6;
+    --text: #c8d8e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ===== WATER ANIMATION ===== */
+  .water-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .water-bg::before {
+    content: '';
+    position: absolute;
+    width: 200%; height: 200%;
+    top: -50%; left: -50%;
+    background: radial-gradient(ellipse at 20% 60%, rgba(13,58,92,0.6) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(14,124,123,0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 80%, rgba(10,22,40,0.8) 0%, transparent 60%);
+    animation: waterShift 15s ease-in-out infinite alternate;
+  }
+  @keyframes waterShift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(3%, 2%) rotate(1deg); }
+  }
+
+  /* ===== WAVE LINES ===== */
+  .wave-lines {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 300px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+  .wave-lines svg { width: 100%; height: 100%; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(6,16,31,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-decoration: none;
+  }
+  .nav-logo span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    color: var(--silver);
+    letter-spacing: 0.3em;
+    display: block;
+    margin-top: -2px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--silver);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    transition: color 0.3s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px; height: 2px;
+    background: var(--gold);
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; right: 0;
+    width: 280px; height: 100vh;
+    background: rgba(6,16,31,0.98);
+    backdrop-filter: blur(12px);
+    z-index: 150;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 40px;
+    border-left: 1px solid rgba(201,168,76,0.2);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.2rem;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 0.1em;
+    transition: color 0.3s, padding-left 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--gold); padding-left: 8px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 8vw;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -5vw; bottom: 10vh;
+    width: 60vw; height: 60vw;
+    max-width: 700px; max-height: 700px;
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: circlePulse 8s ease-in-out infinite;
+  }
+  @keyframes circlePulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+  }
+  .hero-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s ease forwards;
+  }
+  .hero-title .gold { color: var(--gold); }
+  .hero-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2.5rem);
+    letter-spacing: 0.3em;
+    color: var(--teal);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s ease forwards;
+  }
+  .hero-desc {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--silver);
+    max-width: 560px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s ease forwards;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s ease forwards;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--deep);
+    padding: 16px 40px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--gold);
+    padding: 16px 40px;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  /* Floating fish icon */
+  .fish-deco {
+    position: absolute;
+    right: 8vw; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.06;
+    font-size: clamp(120px, 20vw, 280px);
+    line-height: 1;
+    pointer-events: none;
+    animation: fishFloat 6s ease-in-out infinite;
+    user-select: none;
+  }
+  @keyframes fishFloat {
+    0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+    50% { transform: translateY(-54%) rotate(3deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.5;
+    animation: fadeUp 1s 1.2s ease forwards, bobUpDown 2s 1.5s ease-in-out infinite;
+  }
+  @keyframes bobUpDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+  .scroll-hint span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--silver);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* ===== DIVIDER ===== */
+  .section-divider {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 8vw;
+    margin: 20px 0;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+  }
+  .section-divider .icon { color: var(--gold); font-size: 1.2rem; }
+
+  /* ===== SECTION BASE ===== */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 8vw;
+  }
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .title-accent {
+    display: inline-block;
+    width: 48px; height: 3px;
+    background: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  /* ===== ABOUT ===== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 2.1;
+    color: var(--silver);
+    margin-bottom: 20px;
+  }
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    border-left: 2px solid var(--gold);
+    padding-left: 20px;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--silver);
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* Photo collage */
+  .photo-collage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 160px;
+    gap: 8px;
+  }
+  .photo-collage .photo-a {
+    grid-row: 1 / 3;
+  }
+  .collage-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.75) saturate(1.2);
+    transition: filter 0.4s;
+    display: block;
+  }
+  .collage-img:hover { filter: brightness(0.9) saturate(1.4); }
+  .collage-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--ocean);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    opacity: 0.4;
+  }
+
+  /* ===== FEATURES ===== */
+  .features-bg {
+    background: linear-gradient(135deg, rgba(13,58,92,0.3) 0%, transparent 60%);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .feature-card {
+    background: rgba(10,22,40,0.6);
+    padding: 48px 36px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width 0.4s;
+  }
+  .feature-card:hover { background: rgba(13,58,92,0.4); }
+  .feature-card:hover::before { width: 100%; }
+  .feature-icon {
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .feature-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .feature-desc {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--silver);
+  }
+
+  /* ===== GALLERY ===== */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 60px;
+  }
+  .gallery-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) saturate(1.1);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(0.9) saturate(1.5);
+  }
+
+  /* ===== INFO ===== */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+  }
+  .info-table tr {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .info-table td {
+    padding: 20px 0;
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+  .info-table td:first-child {
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    width: 120px;
+    font-size: 0.8rem;
+  }
+  .info-table td:last-child {
+    color: var(--silver);
+    line-height: 1.8;
+  }
+
+  /* Contact card */
+  .contact-card {
+    background: rgba(13,58,92,0.25);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), var(--teal));
+  }
+  .contact-card h3 {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 32px;
+    color: var(--white);
+  }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .contact-icon {
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .contact-info { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
+  .contact-info strong { color: var(--white); font-size: 1.1rem; display: block; margin-bottom: 2px; }
+
+  /* Blog CTA */
+  .blog-cta {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .blog-cta p {
+    font-size: 0.8rem;
+    color: var(--silver);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(14,124,123,0.3), rgba(13,58,92,0.4));
+    border: 1px solid rgba(14,124,123,0.4);
+    color: var(--white);
+    padding: 14px 24px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .blog-link:hover {
+    background: linear-gradient(135deg, rgba(14,124,123,0.5), rgba(13,58,92,0.6));
+    border-color: var(--teal);
+    transform: translateX(4px);
+  }
+  .blog-arrow { transition: transform 0.3s; }
+  .blog-link:hover .blog-arrow { transform: translateX(4px); }
+
+  /* ===== ACCESS ===== */
+  .access-section { text-align: center; }
+  .access-section .section-title { text-align: center; }
+  .access-section .title-accent { display: block; margin: 0 auto 40px; }
+  .access-note {
+    font-size: 0.9rem;
+    color: var(--silver);
+    line-height: 2;
+    max-width: 600px;
+    margin: 0 auto 48px;
+  }
+  .map-box {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(13,58,92,0.2);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 60px 40px;
+    position: relative;
+  }
+  .map-placeholder {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  .map-address {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+  .map-tel {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 60px 8vw 40px;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  .footer-logo {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .footer-logo span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    color: var(--silver);
+    letter-spacing: 0.4em;
+    display: block;
+  }
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--silver);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(168,184,200,0.4);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  /* ===== INSTAGRAM SECTION ===== */
+  .instagram-section {
+    background: linear-gradient(135deg, rgba(6,16,31,0.9) 0%, rgba(13,28,50,0.95) 100%);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  /* Instagram Follow Banner */
+  .ig-follow-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    background: linear-gradient(135deg, rgba(131,58,180,0.15) 0%, rgba(253,29,29,0.12) 50%, rgba(252,176,69,0.12) 100%);
+    border: 1px solid rgba(200,120,180,0.25);
+    border-radius: 2px;
+    padding: 36px 48px;
+    margin-bottom: 56px;
+    position: relative;
+    overflow: hidden;
+    flex-wrap: wrap;
+  }
+  .ig-follow-banner::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    z-index: -1;
+    border-radius: 3px;
+    opacity: 0.3;
+  }
+  .ig-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .ig-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .ig-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    z-index: -1;
+  }
+  .ig-avatar-inner {
+    width: 68px; height: 68px;
+    background: var(--deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+  }
+  .ig-banner-text h3 {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .ig-banner-text p {
+    font-size: 0.82rem;
+    color: var(--silver);
+    letter-spacing: 0.05em;
+  }
+  .ig-banner-text .ig-handle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: rgba(220,140,200,0.9);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* Instagram Follow Button */
+  .ig-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(131,58,180,0.4);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ig-follow-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 28px rgba(131,58,180,0.55);
+  }
+  .ig-follow-btn svg {
+    width: 20px; height: 20px;
+    fill: white;
+  }
+
+  /* Instagram Photo Grid */
+  .ig-grid-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: rgba(200,140,180,0.7);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ig-grid-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(200,140,180,0.3), transparent);
+  }
+
+  .ig-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 40px;
+  }
+  .ig-photo-item {
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(13,40,70,0.6);
+  }
+  .ig-photo-inner {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    transition: transform 0.4s ease;
+    background: linear-gradient(135deg, rgba(13,58,92,0.8), rgba(14,40,70,0.9));
+  }
+  .ig-photo-item:hover .ig-photo-inner {
+    transform: scale(1.06);
+  }
+  .ig-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(131,58,180,0.6) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+  }
+  .ig-photo-item:hover .ig-photo-overlay { opacity: 1; }
+  .ig-photo-overlay span {
+    font-size: 0.7rem;
+    color: white;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  /* Real images in grid */
+  .ig-photo-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.8) saturate(1.1);
+    transition: transform 0.4s ease, filter 0.4s;
+    position: absolute;
+    top: 0; left: 0;
+  }
+  .ig-photo-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(0.95) saturate(1.3);
+  }
+
+  /* Shuffle button */
+  .ig-shuffle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .ig-shuffle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid rgba(200,140,180,0.35);
+    color: rgba(220,160,200,0.9);
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    border-radius: 2px;
+  }
+  .ig-shuffle-btn:hover {
+    border-color: rgba(200,140,180,0.7);
+    background: rgba(131,58,180,0.1);
+    color: white;
+  }
+  .ig-shuffle-btn.spinning svg {
+    animation: spinIcon 0.5s ease;
+  }
+  @keyframes spinIcon {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ===== MAP (proper embed) ===== */
+  .map-embed-wrap {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    border: 1px solid rgba(201,168,76,0.2);
+    overflow: hidden;
+  }
+  .map-embed-wrap iframe {
+    width: 100%;
+    height: 420px;
+    border: 0;
+    display: block;
+    filter: invert(0.88) hue-rotate(180deg) saturate(0.7) brightness(0.85);
+  }
+  .map-overlay-info {
+    background: rgba(6,16,31,0.92);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .map-detail {
+    font-size: 0.85rem;
+    color: var(--silver);
+    line-height: 1.7;
+  }
+  .map-detail strong {
+    color: var(--white);
+    display: block;
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  @media (max-width: 680px) {
+    .ig-photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .ig-follow-banner { padding: 28px 24px; }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .hero { padding: 100px 6vw 60px; }
+    .fish-deco { opacity: 0.04; font-size: 120px; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .photo-collage { grid-template-rows: 180px 130px; }
+
+    .features-grid { grid-template-columns: 1fr; gap: 2px; }
+    .feature-card { padding: 36px 28px; }
+
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .info-grid { grid-template-columns: 1fr; gap: 48px; }
+
+    section { padding: 72px 6vw; }
+
+    .footer-inner { flex-direction: column; gap: 28px; }
+  }
+
+  @media (max-width: 500px) {
+    .hero-cta { flex-direction: column; }
+    .btn-primary, .btn-outline { text-align: center; }
+    .stat-row { gap: 24px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .photo-collage { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .photo-collage .photo-a { grid-row: 1; }
+    .photo-collage .photo-b, .photo-collage .photo-c { display: none; }
+    .contact-card { padding: 32px 24px; }
+    .map-box { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Water background -->
+<div class="water-bg"></div>
+<div class="wave-lines">
+  <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
+    <path d="M0,150 C360,50 720,250 1080,150 C1260,100 1380,170 1440,150 L1440,300 L0,300 Z" fill="rgba(13,58,92,0.3)" />
+    <path d="M0,200 C240,120 480,260 720,200 C960,140 1200,220 1440,190 L1440,300 L0,300 Z" fill="rgba(14,124,123,0.15)" />
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    筏マルキ
+    <span>IKADA MARUKI FISHING</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">釣り場について</a></li>
+    <li><a href="#features">特徴</a></li>
+    <li><a href="#gallery">釣果ギャラリー</a></li>
+    <li><a href="#info">ご案内</a></li>
+    <li><a href="#access">アクセス</a></li>
+    <li><a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" style="color:var(--gold);">ブログ</a></li>
+    <li><a href="#instagram" style="color:rgba(220,140,200,0.9);">Instagram</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobileMenu()">釣り場について</a>
+  <a href="#features" onclick="closeMobileMenu()">特徴</a>
+  <a href="#gallery" onclick="closeMobileMenu()">釣果ギャラリー</a>
+  <a href="#info" onclick="closeMobileMenu()">ご案内</a>
+  <a href="#access" onclick="closeMobileMenu()">アクセス</a>
+  <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank">ブログ →</a>
+  <a href="https://www.instagram.com/ikada.maruki/" target="_blank" style="color:rgba(220,140,200,0.9);">Instagram →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="fish-deco">🐟</div>
+  <p class="hero-eyebrow">MIEprefecture · SHIMAKATSURA</p>
+  <h1 class="hero-title">
+    三重の海で、<br><span class="gold">大物と</span>対峙する。
+  </h1>
+  <p class="hero-sub">IKADA MARUKI FISHING</p>
+  <p class="hero-desc">
+    島勝浦に浮かぶ筏の上で、チヌ・アイゴが待ち構える。<br>
+    定置網には70cmを超えるチヌも漁獲されるほどの魚影の濃さ。<br>
+    早朝から夕まずめまで、本物の海釣りを体験してください。
+  </p>
+  <div class="hero-cta">
+    <a href="tel:0596-561028" class="btn-primary">📞 今すぐ予約</a>
+    <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">釣果ブログを見る →</a>
+  </div>
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="icon">🎣</span></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <p class="section-label">ABOUT MARUKI</p>
+      <h2 class="section-title">島勝浦の豊かな海が<br>育む、一級の釣り場。</h2>
+      <div class="title-accent"></div>
+      <p>三重県北牟婁郡紀北町・島勝浦に位置する「筏マルキ」は、チヌ（クロダイ）・アイゴ釣りを専門とした筏釣り施設です。昔から漁業が盛んで魚影が濃く、各地方から釣り人が訪れる島勝浦で本物の釣りを体験できます。</p>
+      <p>定置網には60cmはもとより70cmを超えるチヌも漁獲されるほどの実績。チヌかかり釣り筏が少なかったこの地で、日本記録を狙える夢の釣り場です。</p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">60<span style="font-size:1rem">cm+</span></div>
+          <div class="stat-label">大型チヌの実績</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">MAX8</div>
+          <div class="stat-label">筏の収容人数</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2015</div>
+          <div class="stat-label">新設年</div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-collage">
+      <div class="photo-a">
+        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/atareba.gif" alt="筏の様子" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🎣</div>'">
+      </div>
+      <div class="photo-b">
+        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🐟</div>'">
+      </div>
+      <div class="photo-c">
+        <img class="collage-img" src="http://www.za.ztv.ne.jp/awbhszyp/CA5NC5CA1.jpg" alt="釣果" onerror="this.parentNode.innerHTML='<div class=\'collage-placeholder\'>🌊</div>'">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="icon">⚓</span></div>
+
+<!-- FEATURES -->
+<section id="features" class="features-bg">
+  <p class="section-label">WHY MARUKI</p>
+  <h2 class="section-title">釣り人に選ばれる<br>3つの理由</h2>
+  <div class="title-accent"></div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🐟</span>
+      <h3 class="feature-title">豊富な魚影</h3>
+      <p class="feature-desc">島勝浦の恵まれた環境により、チヌ・アイゴが豊富に生息。定置網には70センチ超の大型チヌの実績も。水深もあり、四季を通じて安定した釣果が期待できます。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛶</span>
+      <h3 class="feature-title">快適な筏設備</h3>
+      <p class="feature-desc">2015年に新設した最大8名収容の筏。安定した足場と十分なスペースで、ゆったりと釣りを楽しめます。グループやファミリーでの釣行にも対応。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎣</span>
+      <h3 class="feature-title">親切なサポート</h3>
+      <p class="feature-desc">初めての筏釣りも安心。経験豊富なスタッフが丁寧にサポートします。周辺の宿泊施設もご紹介でき、遠方からのお客様も快適に釣行プランを組めます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <p class="section-label">FISHING GALLERY</p>
+  <h2 class="section-title">釣果ギャラリー</h2>
+  <div class="title-accent"></div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_02731.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/DCP_028821.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001701.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/P10001721.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110726_181725.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🎣</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/110727_184646.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🐟</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/20130911_191916.jpg" alt="釣果" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🌊</div>'"></div>
+    <div class="gallery-item"><img src="http://www.za.ztv.ne.jp/awbhszyp/150327asanoa.jpg" alt="朝の筏" onerror="this.style.display='none';this.parentNode.style.background='var(--ocean)';this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>⚓</div>'"></div>
+  </div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="btn-outline">最新の釣果をブログで見る →</a>
+  </div>
+</section>
+
+<div class="section-divider"><span class="icon">🐟</span></div>
+
+<!-- INSTAGRAM -->
+<section id="instagram" class="instagram-section">
+  <p class="section-label">INSTAGRAM</p>
+  <h2 class="section-title">Instagramで<br>最新釣果をチェック</h2>
+  <div class="title-accent"></div>
+
+  <!-- Follow Banner -->
+  <div class="ig-follow-banner">
+    <div class="ig-banner-left">
+      <div class="ig-avatar">
+        <div class="ig-avatar-inner">🎣</div>
+      </div>
+      <div class="ig-banner-text">
+        <span class="ig-handle">@ikada.maruki</span>
+        <h3>筏 マルキ</h3>
+        <p>最新の釣果・筏の様子を毎日更新中。フォローして釣行計画の参考に！</p>
+      </div>
+    </div>
+    <a href="https://www.instagram.com/ikada.maruki?igsh=MXJsdzd2OXNzamsyNQ==" target="_blank" rel="noopener noreferrer" class="ig-follow-btn" aria-label="Instagramでフォロー">
+      <svg viewBox="0 0 448 512" aria-hidden="true"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+      Instagramでフォロー
+    </a>
+  </div>
+
+  <!-- Photo grid label -->
+  <div class="ig-grid-label">RECENT POSTS · ランダム表示</div>
+
+  <!-- Photo Grid (uses existing site photos + placeholders, shuffled by JS) -->
+  <div class="ig-photo-grid" id="igGrid">
+    <!-- filled by JS -->
+  </div>
+
+  <div class="ig-shuffle-row">
+    <button class="ig-shuffle-btn" id="igShuffleBtn" onclick="shuffleIgGrid()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+      別の写真を見る
+    </button>
+    <a href="https://www.instagram.com/ikada.maruki?igsh=MXJsdzd2OXNzamsyNQ==" target="_blank" rel="noopener noreferrer" class="ig-follow-btn" style="font-size:0.82rem;padding:12px 24px;">
+      <svg viewBox="0 0 448 512" aria-hidden="true" style="width:16px;height:16px;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+      もっと見る → Instagram
+    </a>
+  </div>
+</section>
+
+<div class="section-divider"><span class="icon">🐟</span></div>
+
+<!-- INFO -->
+<section id="info">
+  <div class="info-grid">
+    <div>
+      <p class="section-label">INFORMATION</p>
+      <h2 class="section-title">ご利用案内</h2>
+      <div class="title-accent"></div>
+      <table class="info-table">
+        <tr>
+          <td>営業時間</td>
+          <td>早朝〜夕まずめ<br><span style="font-size:0.8rem;color:rgba(168,184,200,0.6);">※詳しくはお問い合わせください</span></td>
+        </tr>
+        <tr>
+          <td>対象魚種</td>
+          <td>チヌ（クロダイ）・アイゴ</td>
+        </tr>
+        <tr>
+          <td>定員</td>
+          <td>最大8名（25号筏）<br>2名〜利用可（予約の際にご確認ください）</td>
+        </tr>
+        <tr>
+          <td>エンジン</td>
+          <td>25号筏：4ストローク全員分ボート搭載<br>30号筏：15馬力に変更（スムーズな送迎）</td>
+        </tr>
+        <tr>
+          <td>予約方法</td>
+          <td>お電話にてご予約ください<br>キャンセルの場合もお電話で</td>
+        </tr>
+        <tr>
+          <td>周辺宿泊</td>
+          <td>ご希望の方には宿泊施設をご紹介します</td>
+        </tr>
+        <tr>
+          <td>外部リンク</td>
+          <td>
+            <a href="http://blog.livedoor.jp/ikadamaruki/" target="_blank" style="color:var(--teal);text-decoration:none;">ライブドアブログ（旧）→</a><br>
+            <a href="http://www.za.ztv.ne.jp/awbhszyp/annai.htm" target="_blank" style="color:var(--teal);text-decoration:none;font-size:0.82rem;">詳細ご案内ページ →</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Contact card -->
+    <div>
+      <div class="contact-card">
+        <h3>お問い合わせ・ご予約</h3>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <div class="contact-info">
+            <strong>0596-56-1028</strong>
+            固定電話（D-net以外）
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📱</span>
+          <div class="contact-info">
+            <strong>090-1980-0063</strong>
+            ソフトバンク（D-net以外）
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📲</span>
+          <div class="contact-info">
+            <strong>090-3303-0063</strong>
+            ドコモ（D-net以外）
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div class="contact-info">
+            三重県北牟婁郡紀北町海山区島勝浦319
+          </div>
+        </div>
+
+        <div class="blog-cta">
+          <p>最新の釣果・お知らせはブログで</p>
+          <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank" class="blog-link">
+            📝 筏マルキ ブログ <span class="blog-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section id="access" class="access-section">
+  <p class="section-label">ACCESS</p>
+  <h2 class="section-title">アクセス</h2>
+  <div class="title-accent"></div>
+  <p class="access-note">
+    三重県北牟婁郡紀北町海山区島勝浦319<br>
+    紀勢自動車道・海山ICより約10分。お車でお越しの方は事前にお電話にてご確認ください。
+  </p>
+  <div class="map-embed-wrap">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.5!2d136.29337!3d34.11228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDA2JzQ0LjIiTiAxMzbCsDE3JzM2LjEiRQ!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="筏マルキ アクセスマップ">
+    </iframe>
+    <div class="map-overlay-info">
+      <div class="map-detail">
+        <strong>筏マルキ（島勝浦）</strong>
+        三重県北牟婁郡紀北町海山区島勝浦319
+      </div>
+      <a href="https://maps.app.goo.gl/EPpmxyQkUcYvLm5j6" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.82rem;padding:12px 24px;">Google Mapで開く →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        筏マルキ
+        <span>IKADA MARUKI FISHING · MIEprefecture</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="#about">釣り場について</a>
+      <a href="#features">特徴</a>
+      <a href="#gallery">ギャラリー</a>
+      <a href="#info">ご案内</a>
+      <a href="#access">アクセス</a>
+      <a href="#instagram">Instagram</a>
+      <a href="https://blogtag.ameba.jp/news/%E7%AD%8F%E3%83%9E%E3%83%AB%E3%82%AD" target="_blank">ブログ</a>
+      <a href="http://www.za.ztv.ne.jp/awbhszyp/link.htm" target="_blank">リンク</a>
+      <a href="http://www.za.ztv.ne.jp/awbhszyp/yado.htm" target="_blank">周辺の宿泊先</a>
+      <a href="http://www.za.ztv.ne.jp/awbhszyp/akusesu1.htm" target="_blank">アクセス詳細</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 筏マルキ · 三重県紀北町島勝浦 · All Rights Reserved
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
+  // ===== INSTAGRAM GRID SHUFFLE =====
+  // 既存サイトの写真プール（本来はInstagram APIの画像URLに差し替え可）
+  const igPhotoPool = [
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/DCP_02731.jpg',        emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/DCP_028821.jpg',       emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/DCP_0241s1.jpg',       emoji: '🌊', label: '海の様子' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/P10001701.jpg',        emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/P10001721.jpg',        emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/CA1IKLP92.jpg',        emoji: '🐟', label: '大物チヌ' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/CA5NC5CA1.jpg',        emoji: '🌊', label: '筏の様子' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/CATAT5VM1.jpg',        emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/CAKQLIIY1.jpg',        emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/110726_181725.jpg',    emoji: '🌅', label: '朝まずめ' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/110727_184646.jpg',    emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/120610_142230.jpg',    emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/120603_151641.jpg',    emoji: '🐟', label: '大物' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/120321_144213.jpg',    emoji: '🌊', label: '海の景色' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/120526_144701.jpg',    emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/150327asanoa.jpg',     emoji: '🌅', label: '朝の筏' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/20130911_191916.jpg',  emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/20130505_195103.jpg',  emoji: '🎣', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/20130412_184239.jpg',  emoji: '🐟', label: '釣果' },
+    { src: 'http://www.za.ztv.ne.jp/awbhszyp/DSCF0510.jpg',         emoji: '🌊', label: '筏の様子' },
+  ];
+
+  const IG_COLS = 8; // 表示件数
+  let currentIgPhotos = [];
+
+  function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderIgGrid(photos) {
+    const grid = document.getElementById('igGrid');
+    grid.innerHTML = '';
+    photos.forEach((p, i) => {
+      const item = document.createElement('a');
+      item.href = 'https://www.instagram.com/ikada.maruki?igsh=MXJsdzd2OXNzamsyNQ==';
+      item.target = '_blank';
+      item.rel = 'noopener noreferrer';
+      item.className = 'ig-photo-item';
+      item.style.cssText = 'opacity:0;transform:scale(0.92);transition:opacity 0.4s ease ' + (i * 0.05) + 's, transform 0.4s ease ' + (i * 0.05) + 's;text-decoration:none;';
+      item.innerHTML = `
+        <img src="${p.src}" alt="${p.label}"
+          onerror="this.style.display='none';this.nextSibling.style.display='flex';">
+        <div class="ig-photo-inner" style="display:none;">${p.emoji}</div>
+        <div class="ig-photo-overlay"><span>📸 ${p.label}</span></div>
+      `;
+      grid.appendChild(item);
+      // Trigger animation
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'scale(1)';
+        });
+      });
+    });
+  }
+
+  function shuffleIgGrid() {
+    const btn = document.getElementById('igShuffleBtn');
+    btn.classList.add('spinning');
+    setTimeout(() => btn.classList.remove('spinning'), 500);
+    currentIgPhotos = shuffleArray(igPhotoPool).slice(0, IG_COLS);
+    renderIgGrid(currentIgPhotos);
+  }
+
+  // Initial render
+  shuffleIgGrid();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .gallery-item, .stat, .contact-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
